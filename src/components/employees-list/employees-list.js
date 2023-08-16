@@ -1,7 +1,7 @@
 import './employees-list.css';
 import EmployeesListItem from '../employees-list-item/employees-list-item';
 
-export default function EmloyeesList({data}) {
+export default function EmloyeesList({data, onDelete}) {
     return (
         <ul className="app-list list-group">
             {data.map(employee => {
@@ -9,6 +9,7 @@ export default function EmloyeesList({data}) {
                         return <EmployeesListItem 
                             key={id}
                             {...props}
+                            onDelete={() => onDelete(id)}
                         />
                     }   
                 )
