@@ -1,7 +1,7 @@
 import './employees-list.css';
 import EmployeesListItem from '../employees-list-item/employees-list-item';
 
-export default function EmloyeesList({data, onDelete}) {
+export default function EmloyeesList({data, onDelete, onToggleProp}) {
     return (
         <ul className="app-list list-group">
             {data.map(employee => {
@@ -10,6 +10,7 @@ export default function EmloyeesList({data, onDelete}) {
                             key={id}
                             {...props}
                             onDelete={() => onDelete(id)}
+                            onToggleProp={(e) => onToggleProp(id, e.currentTarget.getAttribute('data-toggle'))}
                         />
                     }   
                 )

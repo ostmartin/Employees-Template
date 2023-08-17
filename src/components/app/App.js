@@ -14,9 +14,9 @@ export default class App extends Component {
         super(props)
         this.state = {
             data: [
-                {id: 1, name: 'Alex Smith', salary: 1000},
-                {id: 2, name: 'John Karter', salary: 1500},
-                {id: 3, name: 'Erick Kaze', salary: 2000}
+                {id: 1, name: 'Alex Smith', salary: 1000, rise: true, increase: false},
+                {id: 2, name: 'John Karter', salary: 1500, rise: false, increase: true},
+                {id: 3, name: 'Erick Kaze', salary: 2000, rise: false, increase: false}
             ]
         }
     }
@@ -44,23 +44,43 @@ export default class App extends Component {
         })
     }
 
+    onToggleProp = (id, prop) => {
+        this.setState(({data}) => {
+            const newData = data.map(item => {
+                if (item.id === id) {
+                    return {
+                        ...item,
+                        [prop]: !item[prop]
+                    };
+                } else {
+                    return item;
+                }
+            });
+
+            return {
+                data: newData
+            }
+        })
+    }
+
     render() {
         return (
             <div className="app">
-            <AppInfo />
+                <AppInfo data={this.state.data}/>
 
-            <div className="search-panel">
-                <SearchPanel />
-                <AppFilter />
+                <div className="search-panel">
+                    <SearchPanel />
+                    <AppFilter />
+                </div>
+
+                <EmloyeesList 
+                    data={this.state.data}
+                    onDelete={this.deleteItem}
+                    onToggleProp={this.onToggleProp} />
+                <EmployeesAddForm
+                    data={this.state.data}
+                    onFormSubmit={this.addItem} />
             </div>
-
-            <EmloyeesList 
-                data={this.state.data}
-                onDelete={this.deleteItem} />
-            <EmployeesAddForm
-                data={this.state.data}
-                onFormSubmit={this.addItem} />
-        </div>
         )
     }
 }
