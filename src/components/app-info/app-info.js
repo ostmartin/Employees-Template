@@ -1,4 +1,4 @@
-import './app-info.css';
+import './app-info.scss';
 
 export default function AppInfo({ data }) {
     const increase = data.filter(item => item.increase)

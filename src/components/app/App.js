@@ -14,11 +14,12 @@ export default class App extends Component {
         super(props)
         this.state = {
             data: [
-                {id: 1, name: 'Alex Smith', salary: 1000, rise: true, increase: false},
-                {id: 2, name: 'John Karter', salary: 1500, rise: false, increase: true},
+                {id: 1, name: 'Alex Smith', salary: 1000, rise: false, increase: false},
+                {id: 2, name: 'John Karter', salary: 1500, rise: false, increase: false},
                 {id: 3, name: 'Erick Kaze', salary: 2000, rise: false, increase: false}
             ],
-            term: ''
+            term: '',
+            filter: 'all'
         }
     }
 
@@ -64,7 +65,7 @@ export default class App extends Component {
         })
     }
 
-    serchEmp = (items, term) => {
+    searchEmp = (items, term) => {
         if (term.length === 0) {
             return items;
         }
@@ -76,9 +77,23 @@ export default class App extends Component {
         this.setState({term})
     }
 
+    onFilterSelect = (filter) => {
+        this.setState({filter})
+    }
+
+    filterPost = (items, filter) => {
+        switch (filter) {
+            case 'rise':
+                return items.filter(item => item.rise);
+            case 'moreThen1000':
+                return items.filter(item => item.salary > 1000);
+            default: return items;
+        }
+    }
+
     render() {
-        const {data, term} = this.state;
-        const visibleData = this.serchEmp(data, term);
+        const {data, term, filter} = this.state;
+        const visibleData = this.filterPost(this.searchEmp(data, term), filter);
 
         return (
             <div className="app">
@@ -86,7 +101,7 @@ export default class App extends Component {
 
                 <div className="search-panel">
                     <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
-                    <AppFilter />
+                    <AppFilter filter={filter} onFilterSelect={this.onFilterSelect}/>
                 </div>
 
                 <EmloyeesList 
