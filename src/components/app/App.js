@@ -17,7 +17,8 @@ export default class App extends Component {
                 {id: 1, name: 'Alex Smith', salary: 1000, rise: true, increase: false},
                 {id: 2, name: 'John Karter', salary: 1500, rise: false, increase: true},
                 {id: 3, name: 'Erick Kaze', salary: 2000, rise: false, increase: false}
-            ]
+            ],
+            term: ''
         }
     }
 
@@ -63,22 +64,37 @@ export default class App extends Component {
         })
     }
 
+    serchEmp = (items, term) => {
+        if (term.length === 0) {
+            return items;
+        }
+
+        return items.filter(item => item.name.indexOf(term) > -1)
+    }
+    
+    onUpdateSearch = (term) => {
+        this.setState({term})
+    }
+
     render() {
+        const {data, term} = this.state;
+        const visibleData = this.serchEmp(data, term);
+
         return (
             <div className="app">
-                <AppInfo data={this.state.data}/>
+                <AppInfo data={data}/>
 
                 <div className="search-panel">
-                    <SearchPanel />
+                    <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
                     <AppFilter />
                 </div>
 
                 <EmloyeesList 
-                    data={this.state.data}
+                    data={visibleData}
                     onDelete={this.deleteItem}
                     onToggleProp={this.onToggleProp} />
                 <EmployeesAddForm
-                    data={this.state.data}
+                    data={data}
                     onFormSubmit={this.addItem} />
             </div>
         )
