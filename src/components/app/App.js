@@ -91,6 +91,24 @@ export default class App extends Component {
         }
     }
 
+    onSalaryChange = (id, value) => {
+        const editedValue = +value.split('').splice(0, value.length - 1).join('');
+
+        this.setState(({data}) => {
+            return {
+                data: data.map(item => {
+                    if (item.id === id) {
+                        return {
+                            ...item,
+                            salary: +editedValue
+                        };
+                    }
+                    return item;
+                })
+            };
+        })
+    }
+
     render() {
         const {data, term, filter} = this.state;
         const visibleData = this.filterPost(this.searchEmp(data, term), filter);
@@ -107,7 +125,8 @@ export default class App extends Component {
                 <EmloyeesList 
                     data={visibleData}
                     onDelete={this.deleteItem}
-                    onToggleProp={this.onToggleProp} />
+                    onToggleProp={this.onToggleProp}
+                    onSalaryChange={this.onSalaryChange} />
                 <EmployeesAddForm
                     data={data}
                     onFormSubmit={this.addItem} />
